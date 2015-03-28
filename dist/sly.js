@@ -1,5 +1,5 @@
 /*!
- * sly 1.4.3 - 10th Mar 2015
+ * sly 1.4.3 - 28th Mar 2015
  * https://github.com/darsain/sly
  *
  * Licensed under the MIT license.
@@ -382,7 +382,7 @@
 					if (forceCenteredNav && o.activateMiddle) {
 						activate(tempRel.centerItem);
 					}
-				} else if (isNotBordering) {
+				} else if (o.stickyBorders && isNotBordering) {
 					newPos = items[tempRel.firstItem].start;
 				}
 			}
@@ -2123,6 +2123,7 @@
 		swingSpeed:    0.2,   // Swing synchronization speed, where: 1 = instant, 0 = infinite.
 		elasticBounds: false, // Stretch SLIDEE position limits when dragging past FRAME boundaries.
 		interactive:   null,  // Selector for special interactive elements.
+		stickyBorders: true,
 
 		// Scrollbar
 		scrollBar:     null,  // Selector or DOM element for scrollbar container.
