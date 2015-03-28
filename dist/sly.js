@@ -1,5 +1,5 @@
 /*!
- * sly 1.4.3 - 28th Mar 2015
+ * sly 1.4.3 - 29th Mar 2015
  * https://github.com/darsain/sly
  *
  * Licensed under the MIT license.
@@ -137,7 +137,7 @@
 		var scrolling = {
 			last: 0,
 			delta: 0,
-			resetTime: 200
+			resetTime: o.scrollResetTime
 		};
 		var renderID = 0;
 		var historyID = 0;
@@ -1557,24 +1557,23 @@
 		 * @return {Int}
 		 */
 		function normalizeWheelDelta(event) {
-			// wheelDelta needed only for IE8-
-			scrolling.curDelta = ((o.horizontal ? event.deltaY || event.deltaX : event.deltaY) || -event.wheelDelta);
-			scrolling.curDelta /= event.deltaMode === 1 ? 3 : 100;
+      // wheelDelta needed only for IE8-
+      scrolling.curDelta = ((o.horizontal ? event.deltaY || event.deltaX : event.deltaY) || -event.wheelDelta);
+      scrolling.curDelta /= event.deltaMode === 1 ? 3 : 100;
+
 			if (!itemNav) {
 				return scrolling.curDelta;
 			}
-			time = +new Date();
-			if (scrolling.last < time - scrolling.resetTime) {
-				scrolling.delta = 0;
-			}
-			scrolling.last = time;
-			scrolling.delta += scrolling.curDelta;
-			if (abs(scrolling.delta) < 1) {
-				scrolling.finalDelta = 0;
-			} else {
-				scrolling.finalDelta = round(scrolling.delta / 1);
-				scrolling.delta %= 1;
-			}
+
+			scrolling.delta = scrolling.curDelta;
+      scrolling.delta %= 1;
+
+      if (scrolling.delta <= 0) {
+        scrolling.finalDelta = Math.floor(scrolling.delta / 1);
+      } else {
+        scrolling.finalDelta = Math.ceil(scrolling.delta / 1);
+      }
+
 			return scrolling.finalDelta;
 		}
 
@@ -2114,6 +2113,7 @@
 		scrollBy:     0,     // Pixels or items to move per one mouse scroll. 0 to disable scrolling.
 		scrollHijack: 300,   // Milliseconds since last wheel event after which it is acceptable to hijack global scroll.
 		scrollTrap:   false, // Don't bubble scrolling when hitting scrolling limits.
+		scrollResetTime: 200,
 
 		// Dragging
 		dragSource:    null,  // Selector or DOM element for catching dragging events. Default is FRAME.
