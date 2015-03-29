@@ -406,7 +406,7 @@
 					firstItem: items[tempRel.firstItem],
 					lastItem: items[tempRel.lastItem],
 					centerItem: items[tempRel.centerItem],
-					activeItem: items[tempRel.activeItem]
+					activeItem: items[rel.activeItem]
 				});
 
 				if (!renderID) {
