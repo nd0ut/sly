@@ -402,12 +402,6 @@
 			// Start animation rendering
 			if (newPos !== pos.dest) {
 				pos.dest = newPos;
-				trigger('change',{
-					firstItem: items[rel.firstItem],
-					lastItem: items[rel.lastItem],
-					centerItem: items[rel.centerItem],
-					activeItem: items[rel.activeItem]
-				});
 
 				if (!renderID) {
 					render();
@@ -479,16 +473,17 @@
 				} else {
 					$slidee[0].style[o.horizontal ? 'left' : 'top'] = -round(pos.cur) + 'px';
 				}
-			}
-
-			// When animation reached the end, and dragging is not active, trigger moveEnd
-			if (!renderID && dragging.released) {
-				trigger('moveEnd', {
+				trigger('change',{
 					firstItem: items[rel.firstItem],
 					lastItem: items[rel.lastItem],
 					centerItem: items[rel.centerItem],
 					activeItem: items[rel.activeItem]
 				});
+			}
+
+			// When animation reached the end, and dragging is not active, trigger moveEnd
+			if (!renderID && dragging.released) {
+				trigger('moveEnd');
 			}
 
 			syncScrollbar();
@@ -1485,12 +1480,7 @@
 			// Normally, this is triggered in render(), but if there
 			// is nothing to render, we have to do it manually here.
 			if (pos.cur === pos.dest && dragging.init) {
-				trigger('moveEnd', {
-					firstItem: items[rel.firstItem],
-					lastItem: items[rel.lastItem],
-					centerItem: items[rel.centerItem],
-					activeItem: items[rel.activeItem]
-				});
+				trigger('moveEnd');
 			}
 
 			// Resume ongoing cycle
