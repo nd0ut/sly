@@ -402,7 +402,12 @@
 			// Start animation rendering
 			if (newPos !== pos.dest) {
 				pos.dest = newPos;
-				trigger('change');
+				trigger('change',{
+					firstItem: items[rel.firstItem],
+					lastItem: items[rel.lastItem],
+					centerItem: items[rel.centerItem],
+					activeItem: items[rel.activeItem]
+				});
 
 				if (!renderID) {
 					render();
