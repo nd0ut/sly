@@ -676,13 +676,7 @@
 			if (!delta) {
 				return;
 			}
-			if (itemNav) {
-				self[centeredNav ? 'toCenter' : 'toStart'](
-					within((centeredNav ? rel.centerItem : rel.firstItem) + o.scrollBy * delta, 0, items.length)
-				);
-			} else {
-				slideTo(pos.dest + delta, immediate);
-			}
+			slideTo(pos.dest + delta, immediate);
 		};
 
 		/**
@@ -1606,7 +1600,7 @@
 
 			var delta = event.originalEvent.wheelDelta;
 
-			self.slideTo(o.scrollBy * delta);
+			self.slideBy(o.scrollBy * delta);
 		}
 
 		/**
