@@ -366,9 +366,9 @@
 		 */
 		function slideTo(newPos, immediate, dontAlign) {
 			// Align items
-			var tempRel = getRelatives(newPos);
 
 			if (itemNav && dragging.released && !dontAlign) {
+				var tempRel = getRelatives(newPos);
 				var isNotBordering = newPos > pos.start && newPos < pos.end;
 
 				if (centeredNav) {
@@ -409,12 +409,7 @@
 			// Start animation rendering
 			if (newPos !== pos.dest) {
 				pos.dest = newPos;
-				trigger('change', {
-					firstItem: items[tempRel.firstItem],
-					lastItem: items[tempRel.lastItem],
-					centerItem: items[tempRel.centerItem],
-					activeItem: items[rel.activeItem]
-				});
+				trigger('change');
 
 				if (!renderID) {
 					render();
@@ -605,7 +600,12 @@
 			// Normally, this is triggered in render(), but if there
 			// is nothing to render, we have to do it manually here.
 			if (!dragging.init && pos.cur === pos.dest) {
-				trigger('moveEnd');
+				trigger('moveEnd',{
+					firstItem: items[rel.firstItem],
+					lastItem: items[rel.lastItem],
+					centerItem: items[rel.centerItem],
+					activeItem: items[rel.activeItem]
+				});
 			}
 			// Update times for future iteration
 			move.lastTime = move.now;
@@ -1488,7 +1488,12 @@
 			// Normally, this is triggered in render(), but if there
 			// is nothing to render, we have to do it manually here.
 			if (pos.cur === pos.dest && dragging.init) {
-				trigger('moveEnd');
+				trigger('moveEnd', {
+					firstItem: items[rel.firstItem],
+					lastItem: items[rel.lastItem],
+					centerItem: items[rel.centerItem],
+					activeItem: items[rel.activeItem]
+				});
 			}
 
 			// Resume ongoing cycle
@@ -1588,22 +1593,15 @@
 		function scrollHandler(event) {
 			// Mark event as originating in a Sly instance
 			event.originalEvent[namespace] = self;
-			// Don't hijack global scrolling
-			var time = +new Date();
-			if (lastGlobalWheel + o.scrollHijack > time) {
-				lastGlobalWheel = time;
-				return;
-			}
+
 			// Ignore if there is no scrolling to be done
 			if (!o.scrollBy || pos.start === pos.end) {
 				return;
 			}
-			var delta = normalizeWheelDelta(event.originalEvent);
-			// Trap scrolling only when necessary and/or requested
-			if (o.scrollTrap || delta > 0 && pos.dest < pos.end || delta < 0 && pos.dest > pos.start) {
-				stopDefault(event, 1);
-			}
-			self.slideBy(o.scrollBy * delta);
+
+			var delta = event.originalEvent.wheelDelta;
+
+			self.slideTo(o.scrollBy * delta);
 		}
 
 		/**
