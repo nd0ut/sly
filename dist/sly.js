@@ -409,10 +409,10 @@
 			if (newPos !== pos.dest) {
 				pos.dest = newPos;
 				trigger('change', {
-					firstItem: items[rel.firstItem],
-					lastItem: items[rel.lastItem],
-					centerItem: items[rel.centerItem],
-					activeItem: items[rel.activeItem]
+					firstItem: items[tempRel.firstItem],
+					lastItem: items[tempRel.lastItem],
+					centerItem: items[tempRel.centerItem],
+					activeItem: items[tempRel.activeItem]
 				});
 
 				if (!renderID) {
