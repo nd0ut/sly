@@ -810,7 +810,7 @@
 				last.active = rel.activeItem = index;
 
 				updateButtonsState();
-				trigger('active', index);
+				trigger('active', items[index]);
 			}
 
 			return index;
