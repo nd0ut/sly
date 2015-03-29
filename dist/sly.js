@@ -366,8 +366,9 @@
 		 */
 		function slideTo(newPos, immediate, dontAlign) {
 			// Align items
+			var tempRel = getRelatives(newPos);
+
 			if (itemNav && dragging.released && !dontAlign) {
-				var tempRel = getRelatives(newPos);
 				var isNotBordering = newPos > pos.start && newPos < pos.end;
 
 				if (centeredNav) {
