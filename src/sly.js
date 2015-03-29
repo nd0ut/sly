@@ -127,11 +127,6 @@
 		var dragging = {
 			released: 1
 		};
-		var scrolling = {
-			last: 0,
-			delta: 0,
-			resetTime: o.scrollResetTime
-		};
 		var renderID = 0;
 		var historyID = 0;
 		var cycleID = 0;
@@ -406,7 +401,13 @@
 			// Start animation rendering
 			if (newPos !== pos.dest) {
 				pos.dest = newPos;
-				trigger('change');
+				trigger('change', {
+					firstItem: items[rel.firstItem],
+					lastItem: items[rel.lastItem],
+					centerItem: items[rel.centerItem],
+					activeItem: items[rel.activeItem]
+				});
+
 				if (!renderID) {
 					render();
 				}
@@ -1551,23 +1552,22 @@
 		 */
 		function normalizeWheelDelta(event) {
       // wheelDelta needed only for IE8-
-      scrolling.curDelta = ((o.horizontal ? event.deltaY || event.deltaX : event.deltaY) || -event.wheelDelta);
-      scrolling.curDelta /= event.deltaMode === 1 ? 3 : 100;
+      var delta = ((o.horizontal ? event.deltaY || event.deltaX : event.deltaY) || -event.wheelDelta);
+      delta /= event.deltaMode === 1 ? 3 : 100;
 
 			if (!itemNav) {
-				return scrolling.curDelta;
+				return delta;
 			}
 
-			scrolling.delta = scrolling.curDelta;
-      scrolling.delta %= 1;
+      delta %= 1;
 
-      if (scrolling.delta <= 0) {
-        scrolling.finalDelta = Math.floor(scrolling.delta / 1);
+      if (delta <= 0) {
+        delta = Math.floor(delta / 1);
       } else {
-        scrolling.finalDelta = Math.ceil(scrolling.delta / 1);
+        delta = Math.ceil(delta / 1);
       }
 
-			return scrolling.finalDelta;
+			return delta;
 		}
 
 		/**
