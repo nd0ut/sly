@@ -478,7 +478,12 @@
 
 			// When animation reached the end, and dragging is not active, trigger moveEnd
 			if (!renderID && dragging.released) {
-				trigger('moveEnd');
+				trigger('moveEnd', {
+					firstItem: items[rel.firstItem],
+					lastItem: items[rel.lastItem],
+					centerItem: items[rel.centerItem],
+					activeItem: items[rel.activeItem]
+				});
 			}
 
 			syncScrollbar();
