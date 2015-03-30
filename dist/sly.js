@@ -1,5 +1,5 @@
 /*!
- * sly 1.4.3 - 10th Mar 2015
+ * sly 1.4.3 - 30th Mar 2015
  * https://github.com/darsain/sly
  *
  * Licensed under the MIT license.
@@ -370,21 +370,24 @@
 		 * @return {Void}
 		 */
 		function slideTo(newPos, immediate, dontAlign) {
+			var tempRel = getRelatives(newPos);
+
 			// Align items
-			if (itemNav && dragging.released && !dontAlign) {
-				var tempRel = getRelatives(newPos);
+			if (itemNav && dragging.released && !dontAlign && o.itemAlign) {
 				var isNotBordering = newPos > pos.start && newPos < pos.end;
 
 				if (centeredNav) {
 					if (isNotBordering) {
 						newPos = items[tempRel.centerItem].center;
 					}
-					if (forceCenteredNav && o.activateMiddle) {
-						activate(tempRel.centerItem);
-					}
 				} else if (isNotBordering) {
 					newPos = items[tempRel.firstItem].start;
 				}
+			}
+
+			// Activate center item on drag or when drag released
+			if(forceCenteredNav && o.activateMiddle && (o.activateOnDrag ? true : dragging.released)) {
+				activate(tempRel.centerItem);
 			}
 
 			// Handle overflowing position limits
@@ -1569,8 +1572,9 @@
 			}
 			scrolling.last = time;
 			scrolling.delta += scrolling.curDelta;
+
 			if (abs(scrolling.delta) < 1) {
-				scrolling.finalDelta = 0;
+				scrolling.finalDelta = scrolling.delta > 0 ? 1 : -1;
 			} else {
 				scrolling.finalDelta = round(scrolling.delta / 1);
 				scrolling.delta %= 1;
@@ -2103,11 +2107,13 @@
 		horizontal: false, // Switch to horizontal mode.
 
 		// Item based navigation
-		itemNav:        null,  // Item navigation type. Can be: 'basic', 'centered', 'forceCentered'.
-		itemSelector:   null,  // Select only items that match this selector.
-		smart:          false, // Repositions the activated item to help with further navigation.
-		activateOn:     null,  // Activate an item on this event. Can be: 'click', 'mouseenter', ...
-		activateMiddle: false, // Always activate the item in the middle of the FRAME. forceCentered only.
+		itemNav:        			null,  // Item navigation type. Can be: 'basic', 'centered', 'forceCentered'.
+		itemSelector:   			null,  // Select only items that match this selector.
+		smart:          			false, // Repositions the activated item to help with further navigation.
+		activateOn:     			null,  // Activate an item on this event. Can be: 'click', 'mouseenter', ...
+		activateMiddle: 			false, // Always activate the item in the middle of the FRAME. forceCentered only.
+		activateMiddleOnDrag: false, // Works with activateMiddle. Activate item on dragging (by default - on drag release)
+		itemAlign: 						true, // Do not align items
 
 		// Scrolling
 		scrollSource: null,  // Element for catching the mouse wheel scrolling. Default is FRAME.
