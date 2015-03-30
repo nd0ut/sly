@@ -665,7 +665,7 @@
 			if (!delta) {
 				return;
 			}
-			if (itemNav) {
+			if (itemNav && !o.forcePixelScroll) {
 				self[centeredNav ? 'toCenter' : 'toStart'](
 					within((centeredNav ? rel.centerItem : rel.firstItem) + o.scrollBy * delta, 0, items.length)
 				);
@@ -2109,10 +2109,11 @@
 		itemAlign: 						true, // Do not align items
 
 		// Scrolling
-		scrollSource: null,  // Element for catching the mouse wheel scrolling. Default is FRAME.
-		scrollBy:     0,     // Pixels or items to move per one mouse scroll. 0 to disable scrolling.
-		scrollHijack: 300,   // Milliseconds since last wheel event after which it is acceptable to hijack global scroll.
-		scrollTrap:   false, // Don't bubble scrolling when hitting scrolling limits.
+		scrollSource: 			null,  // Element for catching the mouse wheel scrolling. Default is FRAME.
+		scrollBy:     			0,     // Pixels or items to move per one mouse scroll. 0 to disable scrolling.
+		scrollHijack: 			300,   // Milliseconds since last wheel event after which it is acceptable to hijack global scroll.
+		scrollTrap:   			false, // Don't bubble scrolling when hitting scrolling limits.
+		forcePixelScroll: 	false, // Force scroll per pixel (even in item based)
 
 		// Dragging
 		dragSource:    null,  // Selector or DOM element for catching dragging events. Default is FRAME.
