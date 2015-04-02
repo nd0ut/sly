@@ -1,5 +1,5 @@
 /*!
- * sly 1.4.3 - 30th Mar 2015
+ * sly 1.4.3 - 2nd Apr 2015
  * https://github.com/darsain/sly
  *
  * Licensed under the MIT license.
@@ -900,7 +900,7 @@
 				// From start
 				for (var i = 0, il = items.length; i < il; i++) {
 					// First item
-					if (first === false && slideePos <= items[i].start + items[i].half) {
+					if (first === false && slideePos <= items[i].start + (o.relativesByHalf ? items[i].half : items[i].size)) {
 						first = i;
 					}
 
@@ -910,7 +910,7 @@
 					}
 
 					// Last item
-					if (i === il - 1 || slideePos <= items[i].end + items[i].half) {
+					if (i === il - 1 || slideePos <= items[i].end + ((o.relativesByHalf ? items[i].half : 0))) {
 						last = i;
 						break;
 					}
@@ -2113,7 +2113,8 @@
 		activateOn:     			null,  // Activate an item on this event. Can be: 'click', 'mouseenter', ...
 		activateMiddle: 			false, // Always activate the item in the middle of the FRAME. forceCentered only.
 		activateMiddleOnDrag: false, // Works with activateMiddle. Activate item on dragging (by default - on drag release)
-		itemAlign: 						true, // Do not align items
+		itemAlign: 						true,  // Do not align items
+		relativesByHalf: 			true,  // Calculates the first and last items by it's half
 
 		// Scrolling
 		scrollSource: 			null,  // Element for catching the mouse wheel scrolling. Default is FRAME.
